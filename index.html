@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VibeSounds Our Ultimate Music Store</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #121212;
+    color: #eee;
+    line-height: 1.6;
+    scroll-behavior: smooth;
+  }
+  a {
+    color: #1db954;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  a:hover,
+  a:focus {
+    color: #1ed760;
+  }
+  header {
+    background: #1f1f1f;
+    padding: 20px 40px;
+    border-bottom: 2px solid #1db954;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  header h1 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    color: #1db954;
+    cursor: default;
+  }
+  nav {
+    position: relative;
+  }
+  /* Hamburger menu - checkbox toggle */
+  #nav-toggle {
+    display: none;
+  }
+  label[for="nav-toggle"] {
+    display: none;
+    cursor: pointer;
+    width: 28px;
+    height: 22px;
+    position: relative;
+  }
+  label[for="nav-toggle"] span,
+  label[for="nav-toggle"] span::before,
+  label[for="nav-toggle"] span::after {
+    display: block;
+    background: #1db954;
+    height: 3px;
+    border-radius: 2px;
+    position: absolute;
+    width: 100%;
+    transition: all 0.3s ease;
+  }
+  label[for="nav-toggle"] span {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  label[for="nav-toggle"] span::before {
+    content: '';
+    top: -8px;
+  }
+  label[for="nav-toggle"] span::after {
+    content: '';
+    top: 8px;
+  }
+  #nav-toggle:checked + nav ul {
+    max-height: 300px;
+  }
+  #nav-toggle:checked + nav label[for="nav-toggle"] span {
+    background: transparent;
+  }
+  #nav-toggle:checked + nav label[for="nav-toggle"] span::before {
+    transform: rotate(45deg);
+    top: 0;
+  }
+  #nav-toggle:checked + nav label[for="nav-toggle"] span::after {
+    transform: rotate(-45deg);
+    top: 0;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    max-height: none;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+  }
+  nav ul li {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  nav ul li a {
+    padding: 6px 8px;
+    display: block;
+  }
+  nav ul li a:hover,
+  nav ul li a:focus {
+    background: #1db954;
+    color: #121212;
+    border-radius: 6px;
+  }
+
+  /* Hero Section */
+  .hero {
+    background: linear-gradient(135deg, #1db954cc, #1ed760cc), 
+    url('https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+    color: #fff;
+    padding: 140px 20px 100px;
+    text-align: center;
+  }
+  .hero h2 {
+    font-size: 3.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    text-shadow: 0 0 12px #000;
+  }
+  .hero p {
+    font-size: 1.3rem;
+    max-width: 650px;
+    margin: 0 auto 30px;
+    text-shadow: 0 0 8px #000;
+  }
+  .hero a.btn-primary {
+    background: #121212;
+    color: #1db954;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 15px 36px;
+    border-radius: 30px;
+    box-shadow: 0 8px 20px #1db954cc;
+    transition: all 0.4s ease;
+  }
+  .hero a.btn-primary:hover {
+    background: #1db954;
+    color: #121212;
+    box-shadow: 0 12px 40px #1ed760dd;
+  }
+
+  /* Category Tabs */
+  .category-tabs {
+    max-width: 1200px;
+    margin: 60px auto 40px;
+    padding: 0 20px;
+  }
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  /* Hide radio inputs */
+  input[name="tab-control"] {
+    display: none;
+  }
+  /* Tab labels */
+  .tab-label {
+    font-weight: 700;
+    color: #1db954;
+    cursor: pointer;
+    padding: 8px 22px;
+    border-radius: 30px;
+    background: #222;
+    box-shadow: 0 4px 10px rgba(29,185,84,0.3);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .tab-label:hover {
+    background: #1ed760;
+    color: #121212;
+  }
+  /* Active tab style */
+  input[name="tab-control"]:checked + .tab-label {
+    background: #1db954;
+    color: #121212;
+  }
+  /* Content Panels */
+  .tab-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: none;
+    grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+    gap: 34px;
+  }
+  /* Show content of checked tab */
+  #tab-all:checked ~ .content #all,
+  #tab-instruments:checked ~ .content #instruments,
+  #tab-albums:checked ~ .content #albums,
+  #tab-accessories:checked ~ .content #accessories {
+    display: grid;
+  }
+
+  /* Product cards */
+  .product-card {
+    background: #222;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(29, 185, 84, 0.3);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(29, 185, 84, 0.6);
+  }
+  .product-card img {
+    width: 100%;
+    display: block;
+    border-bottom: 2px solid #1db954;
+  }
+  .product-info {
+    padding: 16px 20px 24px;
+  }
+  .product-info h4 {
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+  }
+  .product-info p {
+    font-size: 1rem;
+    color: #bbb;
+    margin-bottom: 12px;
+  }
+  .product-info .price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1ed760;
+  }
+
+  /* Newsletter Section */
+  .newsletter {
+    max-width: 700px;
+    margin: 60px auto;
+    padding: 40px 20px;
+    text-align: center;
+    background: #1f1f1f;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(29, 185, 84, 0.3);
+  }
+  .newsletter h3 {
+    color: #1db954;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  .newsletter p {
+    color: #bbb;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+  }
+  .newsletter form {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .newsletter input[type="email"] {
+    padding: 12px 18px;
+    border-radius: 30px;
+    border: none;
+    width: 280px;
+    font-size: 1rem;
+    outline: none;
+  }
+  .newsletter button {
+    padding: 12px 28px;
+    border-radius: 30px;
+    background: #1db954;
+    border: none;
+    color: #121212;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .newsletter button:hover,
+  .newsletter button:focus {
+    background: #1ed760;
+  }
+
+  /* Testimonials - CSS slider */
+  .testimonials {
+    max-width: 900px;
+    margin: 80px auto 120px;
+    padding: 0 20px;
+    color: #eee;
+    text-align: center; /* Center text */
+  }
+  .testimonials h3 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #1db954;
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+  }
+  .testimonial-slides {
+    position: relative;
+    overflow: hidden;
+    height: 130px;
+    display: flex; /* Flex container */
+    justify-content: center; /* Center contents horizontally */
+  }
+  /* Hide radio buttons */
+  .testimonial-radio {
+    display: none;
+  }
+  /* Slide container */
+  .slides {
+    display: flex;
+    width: 300%;
+    height: 130px;
+    transition: transform 0.6s ease-in-out;
+    justify-content: center; /* Center slides horizontally */
+  }
+  .testimonial-slide {
+    flex: 1 0 100%;
+    padding: 0 40px;
+    box-sizing: border-box;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: #ccc;
+    text-align: center;
+  }
+  .testimonial-slide cite {
+    display: block;
+    margin-top: 12px;
+    font-weight: 600;
+    color: #1db954;
+    font-size: 1rem;
+  }
+  /* Controls */
+  .testimonial-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 10px;
+  }
+  .testimonial-controls label {
+    width: 15px;
+    height: 15px;
+    background: #444;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .testimonial-controls label:hover,
+  .testimonial-controls label:focus {
+    background: #1db954;
+  }
+  /* Slide positioning */
+  #slide1:checked ~ .testimonial-slides .slides {
+    transform: translateX(0%);
+  }
+  #slide2:checked ~ .testimonial-slides .slides {
+    transform: translateX(-100%);
+  }
+  #slide3:checked ~ .testimonial-slides .slides {
+    transform: translateX(-200%);
+  }
+  /* Active control */
+  #slide1:checked ~ .testimonial-controls label[for="slide1"],
+  #slide2:checked ~ .testimonial-controls label[for="slide2"],
+  #slide3:checked ~ .testimonial-controls label[for="slide3"] {
+    background: #1db954;
+    box-shadow: 0 0 6px #1db954;
+  }
+
+  /* New sections styling */
+  section#artists, section#events, section#contact {
+    max-width: 900px;
+    margin: 80px auto;
+    padding: 20px;
+    background: #1f1f1f;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(29, 185, 84, 0.3);
+  }
+  section#artists h3,
+  section#events h3,
+  section#contact h3 {
+    color: #1db954;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  section#artists p,
+  section#events p,
+  section#contact p {
+    text-align: center;
+    color: #bbb;
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+  /* Contact Form */
+  #contact-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  #contact-form label {
+    font-weight: 600;
+    font-size: 1rem;
+    color: #1ed760;
+  }
+  #contact-form input,
+  #contact-form textarea {
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: none;
+    font-size: 1rem;
+    resize: vertical;
+  }
+  #contact-form button {
+    margin-top: 10px;
+    width: 140px;
+    padding: 12px 0;
+    background: #1db954;
+    border: none;
+    border-radius: 30px;
+    color: #121212;
+    font-weight: 700;
+    cursor: pointer;
+    align-self: center;
+    transition: background-color 0.3s ease;
+  }
+  #contact-form button:hover,
+  #contact-form button:focus {
+    background: #1ed760;
+  }
+
+  /* Footer styling */
+  footer {
+    background: #1f1f1f;
+    color: #1db954;
+    text-align: center;
+    padding: 20px 0;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-top: 2px solid #1db954;
+  }
+
+  /* Responsive text scaling and layout */
+  @media (max-width: 1100px) {
+    .category-tabs {
+      padding: 0 10px;
+    }
+    nav .nav-container {
+      padding: 0 10px;
+    }
+    section#artists, section#events, section#contact {
+      margin: 40px 15px;
+    }
+  }
+  @media (max-width: 768px) {
+    .hero h2 {
+      font-size: 2.8rem;
+    }
+    .hero p {
+      font-size: 1rem;
+    }
+    nav ul {
+      flex-direction: column;
+      max-height: 0;
+      overflow: hidden;
+      background: #1f1f1f;
+      border-radius: 0 0 8px 8px;
+      transition: max-height 0.4s ease-in-out;
+      margin-top: 12px;
+    }
+    nav ul li {
+      margin: 10px 0;
+    }
+    label[for="nav-toggle"] {
+      display: block;
+    }
+    .nav-container {
+      flex-wrap: wrap;
+    }
+    .category-tabs {
+      margin-top: 40px;
+    }
+    .newsletter form {
+      flex-direction: column;
+      gap: 16px;
+    }
+    .newsletter input[type="email"] {
+      width: 100%;
+    }
+    .testimonial-slide {
+      font-size: 1rem;
+      padding: 0 15px;
+      height: auto;
+    }
+    #contact-form {
+      margin: 20px;
+    }
+  }
+</style>
+</head>
+<body id="top">
+  <header>
+    <div class="nav-container">
+      <h1>VibeSounds</h1>
+      <input type="checkbox" id="nav-toggle" aria-label="Toggle navigation menu" />
+      <nav>
+        <label for="nav-toggle" tabindex="0"><span></span></label>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#all">Shop</a></li>
+          <li><a href="#artists">Artists</a></li>
+          <li><a href="#events">Events</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" role="banner">
+    <h2>Feel the Music. Own the Vibe.</h2>
+    <p>Explore top instruments, albums, and gear at unbeatable prices. Experience music like never before with VibeSounds.</p>
+    <a href="#all" class="btn-primary" aria-label="Shop Now">Shop Now</a>
+  </section>
+
+  <section class="category-tabs" aria-label="Product categories">
+    <input type="radio" name="tab-control" id="tab-all" checked />
+    <input type="radio" name="tab-control" id="tab-instruments" />
+    <input type="radio" name="tab-control" id="tab-albums" />
+    <input type="radio" name="tab-control" id="tab-accessories" />
+    
+    <div class="tabs">
+      <label for="tab-all" class="tab-label">All</label>
+      <label for="tab-instruments" class="tab-label">Instruments</label>
+      <label for="tab-albums" class="tab-label">Albums</label>
+      <label for="tab-accessories" class="tab-label">Accessories</label>
+    </div>
+
+    <div class="content">
+      <div id="all" class="tab-content" aria-label="All products">
+        <article class="product-card">
+          <img src="https://i.ytimg.com/vi/Gda-CZAfxGQ/maxresdefault.jpg" alt="Electric Guitar" />
+          <div class="product-info">
+            <h4>Electric Guitar</h4>
+            <p>Fender Stratocaster - Classic tone and style</p>
+            <span class="price">$899</span>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Vinyl Albums" />
+          <div class="product-info">
+            <h4>Vinyl Albums</h4>
+            <p>Curated classic rock and jazz collections</p>
+            <span class="price">$25 - $120</span>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="https://static.333travel.nl/web-images/06/2022/62b475dde60ff/amerika-alaska-landschap.jpeg" alt="Studio Headphones" />
+          <div class="product-info">
+            <h4>Studio Headphones</h4>
+            <p>High fidelity sound with comfort</p>
+            <span class="price">$199</span>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=400&q=80" alt="Digital Piano" />
+          <div class="product-info">
+            <h4>Digital Piano</h4>
+            <p>Yamaha P-125 - Authentic piano sound &amp; feel</p>
+            <span class="price">$649</span>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1499346030926-9a72daac6c63?auto=format&fit=crop&w=400&q=80" alt="Guitar Strings" />
+          <div class="product-info">
+            <h4>Guitar Strings</h4>
+            <p>Premium steel strings for electric guitar</p>
+            <span class="price">$12</span>
+          </div>
+        </article>
+      </div>
+
+      <div id="instruments" class="tab-content" aria-label="Instruments products">
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1519643225227-cd0726dbb7a2?auto=format&fit=crop&w=400&q=80" alt="Electric Guitar" />
+          <div class="product-info">
+            <h4>Electric Guitar</h4>
+            <p>Fender Stratocaster - Classic tone and style</p>
+            <span class="price">$899</span>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=400&q=80" alt="Digital Piano" />
+          <div class="product-info">
+            <h4>Digital Piano</h4>
+            <p>Yamaha P-125 - Authentic piano sound &amp; feel</p>
+            <span class="price">$649</span>
+          </div>
+        </article>
+      </div>
+
+      <div id="albums" class="tab-content" aria-label="Albums products">
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Vinyl Albums" />
+          <div class="product-info">
+            <h4>Vinyl Albums</h4>
+            <p>Curated classic rock and jazz collections</p>
+            <span class="price">$25 - $120</span>
+          </div>
+        </article>
+      </div>
+
+      <div id="accessories" class="tab-content" aria-label="Accessories products">
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1540420773422-131a89e32f52?auto=format&fit=crop&w=400&q=80" alt="Studio Headphones" />
+          <div class="product-info">
+            <h4>Studio Headphones</h4>
+            <p>High fidelity sound with comfort</p>
+            <span class="price">$199</span>
+          </div>
+        </article>
+        <article class="product-card">
+          <img src="https://images.unsplash.com/photo-1499346030926-9a72daac6c63?auto=format&fit=crop&w=400&q=80" alt="Guitar Strings" />
+          <div class="product-info">
+            <h4>Guitar Strings</h4>
+            <p>Premium steel strings for electric guitar</p>
+            <span class="price">$12</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="newsletter" aria-label="Newsletter subscription">
+    <h3>Stay in Tune with VibeSounds</h3>
+    <p>Subscribe to our newsletter for the latest deals, new arrivals, and exclusive events.</p>
+    <form action="#" method="post">
+      <input type="email" id="email" name="email" placeholder="Enter your email address" required aria-required="true" aria-label="Email address" />
+      <button type="submit" aria-label="Subscribe to newsletter">Subscribe</button>
+    </form>
+  </section>
+
+  <section class="testimonials" aria-label="Customer testimonials">
+    <h3>What Our Customers Say</h3>
+
+    <input type="radio" name="testimonial-control" id="slide1" class="testimonial-radio" checked />
+    <input type="radio" name="testimonial-control" id="slide2" class="testimonial-radio" />
+    <input type="radio" name="testimonial-control" id="slide3" class="testimonial-radio" />
+
+    <div class="testimonial-slides">
+      <div class="slides">
+        <blockquote class="testimonial-slide">
+          <p>"VibeSounds has the best selection of instruments. The quality and customer service blew me away!"</p>
+          <cite>– Jessie M.</cite>
+        </blockquote>
+        <blockquote class="testimonial-slide">
+          <p>"I found the rare vinyls I was hunting here. Shipping was fast and packaging perfect."</p>
+          <cite>– Cup Cake.</cite>
+        </blockquote>
+        <blockquote class="testimonial-slide">
+          <p>"Their headphones changed my music experience forever. Highly recommend to all audio lovers."</p>
+          <cite>– Sophia L.</cite>
+        </blockquote>
+      </div>
+    </div>
+
+    <div class="testimonial-controls" role="tablist" aria-label="Testimonials Navigation">
+      <label for="slide1" role="tab" tabindex="0" aria-selected="true" aria-controls="slide1"></label>
+      <label for="slide2" role="tab" tabindex="0" aria-selected="false" aria-controls="slide2"></label>
+      <label for="slide3" role="tab" tabindex="0" aria-selected="false" aria-controls="slide3"></label>
+    </div>
+  </section>
+
+  <!-- New artist section -->
+  <section id="artists" tabindex="-1" aria-label="Artists">
+    <h3>Featured Artists</h3>
+    <p>Discover the talented musicians that make VibeSounds unique. We support and collaborate with artists worldwide to bring you exclusive sounds and gear.</p>
+  </section>
+
+  <!-- New events section -->
+  <section id="events" tabindex="-1" aria-label="Events">
+    <h3>Upcoming Events</h3>
+    <p>Join us for concerts, workshops, and live sessions. Stay tuned for our latest events and never miss out on experiencing music up close.</p>
+  </section>
+
+  <!-- New contact section -->
+  <section id="contact" tabindex="-1" aria-label="Contact">
+    <h3>Contact Us</h3>
+    <p>Have questions or want to get in touch? We’d love to hear from you. Send us a message using the form below.</p>
+    <form id="contact-form" action="#" method="post" aria-label="Contact form">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Your full name" required aria-required="true" />
+      <label for="email-contact">Email</label>
+      <input type="email" id="email-contact" name="email-contact" placeholder="you@example.com" required aria-required="true" />
+      <label for="message">Message</label>
+      <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required aria-required="true"></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <footer role="contentinfo">
+    <p>&copy; 2025 VibeSounds. All rights reserved.</p>
+    <p>Made with <span style="color:#e25555;">&#10084;</span> by Ravendra</p>
+  </footer>
+</body>
+</html>
